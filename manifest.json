@@ -38,5 +38,13 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.moecar.journal",
+      "url": "https://frankalwayslovejoan.github.io/moecar-journal/manifest.json"
+    }
+  ],
+  "prefer_related_applications": true
 }
