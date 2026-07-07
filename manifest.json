@@ -1,0 +1,38 @@
+{
+  "name": "萌車日記 MoeCar Journal",
+  "short_name": "萌車日記",
+  "description": "日系療癒草莓燕麥奶風格的車輛日常補給與沙龍紀錄 App",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FDF6F0",
+  "theme_color": "#FFB3B3",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23FFB3B3%22 rx=%2220%22/><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23FFB3B3%22 rx=%2220%22/><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22390%22 height=%22844%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FDF6F0%22/><text x=%2250%%22 y=%2250%%22 font-size=%2224%22 fill=%22%23654E46%22 text-anchor=%22middle%22 font-family=%22sans-serif%22>MoeCar Mobile View</text></svg>",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221024%22 height=%22768%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23FDF6F0%22/><text x=%2250%%22 y=%2250%%22 font-size=%2232%22 fill=%22%23654E46%22 text-anchor=%22middle%22 font-family=%22sans-serif%22>MoeCar Desktop Wide View</text></svg>",
+      "sizes": "1024x768",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ]
+}
