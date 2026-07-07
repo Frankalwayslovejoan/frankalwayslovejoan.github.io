@@ -1,14 +1,18 @@
-// sw.js - 萌車日記離線盾牌 (完全自給自足版)
-const CACHE_NAME = 'moecar-journal-v3'; // 再次升級版本號，強迫刷新
+// sw.js - 萌車日記離線盾牌 (實體檔案完全體版)
+const CACHE_NAME = 'moecar-journal-v4'; // 升級版本號以強迫瀏覽器刷新大腦
 const ASSETS = [
   './',
   './index.html',
   './app.js',
   './database.js',
-  './manifest.json'
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './screenshot-mobile.png',
+  './screenshot-desktop.png'
 ];
 
-// ... 底下的 install、activate、fetch 監聽維持原樣不變唷！ ...
+// ... 底下的 install、activate、fetch 監聽維持原樣不動 ...
 
 // 1. 安裝時把所有衣服（靜態資源）抓進快取口袋
 self.addEventListener('install', (e) => {
