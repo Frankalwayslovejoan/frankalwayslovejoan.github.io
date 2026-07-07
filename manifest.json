@@ -5,7 +5,7 @@
   "description": "日系療癒草莓燕麥奶風格的車輛日常補給與沙龍紀錄 App",
   "lang": "zh-TW",
   "dir": "ltr",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "tabbed", "standalone"],
@@ -37,6 +37,20 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "./screenshot-desktop.png",
+      "sizes": "1024x768",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ],
   "related_applications": [

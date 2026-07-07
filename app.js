@@ -1,12 +1,16 @@
-// 📡 註冊 PWA 離線小管家神經 (精準作用域版)
+// 📡 註冊 PWA 離線小管家神經 (GitHub Pages 絕對路徑定案版)
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js', { scope: './' })
-            .then(reg => console.log('📡 萌車日記離線小管家註冊成功！', reg.scope))
+        // 自動偵測是不是在 GitHub Pages 上，如果是就自動補上專案名稱路徑
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const swPath = isGitHubPages ? '/moecar-journal/sw.js' : './sw.js';
+        const swScope = isGitHubPages ? '/moecar-journal/' : './';
+
+        navigator.serviceWorker.register(swPath, { scope: swScope })
+            .then(reg => console.log('📡 萌車日記離線小管家註冊成功！ Scope 是:', reg.scope))
             .catch(err => console.log('😢 小管家罷工了：', err));
     });
 }
-
 import { MoeCarDB } from './database.js';
 
 const db = new MoeCarDB();
