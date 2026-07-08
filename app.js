@@ -562,3 +562,141 @@ async function handleDeleteVehicle() {
     const remainingVehicles = await db.getAllVehicles();
     if (remainingVehicles.length > 0) { await refreshHomeData(); switchPage('fuel'); } else { prepareNewVehicleForm(); switchPage('settings'); }
 }
+
+// ===================================================
+// 📊 萌車日記：自動偵測並加入中文 Excel 匯出與匯入功能
+// ===================================================
+
+// 欄位中英對照表
+const fieldMapping = {
+  date: '日期',
+  type: '類型',
+  liters: '公升',
+  cost: '金額',
+  mileage: '里程'
+};
+
+// 自動動態尋找你原本 App 正在使用的 localStorage Key
+function getCarStorageKey() {
+  const keys = ['moecar_records', 'records', 'car_records', 'moecar-records', 'records_list'];
+  for (let k of keys) {
+    if (localStorage.getItem(k)) return k;
+  }
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && (k.includes('car') || k.includes('record') || k.includes('journal'))) return k;
+  }
+  return 'moecar_records'; // 預設值
+}
+
+// 📥 功能一：匯出 Excel (CSV)
+function exportToExcel() {
+  const key = getCarStorageKey();
+  const rawData = localStorage.getItem(key);
+  if (!rawData) {
+    alert('目前還沒有任何紀錄可以匯出喔！');
+    return;
+  }
+  
+  const records = JSON.parse(rawData);
+  if (!Array.isArray(records) || records.length === 0) {
+    alert('目前紀錄是空的喔！');
+    return;
+  }
+
+  const headers = Object.keys(fieldMapping).map(k => fieldMapping[k]);
+  let csvContent = headers.join(',') + '\r\n';
+
+  records.forEach(item => {
+    const row = Object.keys(fieldMapping).map(k => {
+      let value = item[k] !== undefined ? item[k] : '';
+      if (typeof value === 'string' && value.includes(',')) {
+        value = `"${value}"`;
+      }
+      return value;
+    });
+    csvContent += row.join(',') + '\r\n';
+  });
+
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `萌車日記_資料備份_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+// 📤 功能二：匯入 Excel (CSV)
+function handleImportFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    try {
+      const text = event.target.result;
+      const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+      if (lines.length < 2) {
+        alert('檔案內容格式不正確或沒有資料！');
+        return;
+      }
+
+      const headers = lines[0].replace(/^\uFEFF/, '').split(',').map(h => h.trim());
+      const reverseMapping = {};
+      Object.keys(fieldMapping).forEach(k => { reverseMapping[fieldMapping[k]] = k; });
+
+      const importedRecords = [];
+      for (let i = 1; i < lines.length; i++) {
+        const columns = lines[i].split(',');
+        if (columns.length !== headers.length) continue;
+
+        const record = {};
+        headers.forEach((header, index) => {
+          const engKey = reverseMapping[header];
+          if (engKey) {
+            let val = columns[index].trim().replace(/^"|"$/g, '');
+            if (engKey === 'liters' || engKey === 'cost' || engKey === 'mileage') {
+              record[engKey] = val !== '' ? Number(val) : 0;
+            } else {
+              record[engKey] = val;
+            }
+          }
+        });
+        importedRecords.push(record);
+      }
+
+      if (importedRecords.length > 0) {
+        if (confirm(`確認要匯入這 ${importedRecords.length} 筆資料嗎？這將會覆蓋目前的 App 資料喔！`)) {
+          const key = getCarStorageKey();
+          localStorage.setItem(key, JSON.stringify(importedRecords));
+          alert('🎉 資料匯入成功！網頁即將重新整理。');
+          window.location.reload();
+        }
+      } else {
+        alert('沒有解析到有效的資料列，請檢查 Excel 欄位名稱是否正確。');
+      }
+    } catch (err) {
+      alert('解析檔案時發生錯誤，請確保是標準的 CSV 格式。');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+// 監聽網頁按鈕事件
+document.addEventListener('DOMContentLoaded', () => {
+  const exportBtn = document.getElementById('exportBtn');
+  const importBtn = document.getElementById('importBtn');
+  const fileInput = document.getElementById('fileInput');
+
+  if (exportBtn) exportBtn.addEventListener('click', exportToExcel);
+  if (importBtn && fileInput) {
+    importBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', handleImportFile);
+  }
+});
+
