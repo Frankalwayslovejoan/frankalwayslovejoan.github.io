@@ -384,6 +384,17 @@
         </div>
     </div>
 
+    <!-- 📊 資料備份與還原按鈕區塊 -->
+<div class="backup-section" style="margin: 20px; text-align: center;">
+  <hr style="border: 0; border-top: 1px dashed #ccc; margin-bottom: 20px;">
+  <button id="exportBtn" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px; font-weight: bold;">
+    📊 匯出 Excel (CSV)
+  </button>
+  <button id="importBtn" style="padding: 10px 20px; background-color: #008CBA; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
+    📥 匯入 Excel (CSV)
+  </button>
+  <input type="file" id="fileInput" accept=".csv" style="display: none;" />
+</div>
     <div class="nav">
         <div class="nav-item active" data-page="fuel">⛽ 點心</div>
         <div class="nav-item" data-page="service">🛠️ 沙龍</div>
